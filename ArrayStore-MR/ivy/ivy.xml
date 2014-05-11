@@ -7,7 +7,7 @@
   </publications>
 
   <dependencies>
-    <dependency org="edu.umd" name="cloud9" rev="1.4.17" conf="*->*">
+    <dependency org="edu.umd" name="cloud9" rev="1.5.0" conf="*->*">
        <exclude org="fastutil"/>
 <!--       <exclude org="org.apache.hadoop" />  -->
       <exclude org="colt" />
@@ -15,15 +15,15 @@
     <dependency org="junit" name="junit" rev="4.11" />
     
      
-    <dependency org="org.apache.hadoop" name="hadoop-common" rev="2.0.0-cdh4.3.0" conf="*->*,!javadoc"/>
-    <dependency org="org.apache.hadoop" name="hadoop-yarn-api" rev="2.0.0-cdh4.3.0" conf="*->*,!javadoc"/>
-    <dependency org="org.apache.hadoop" name="hadoop-yarn-common" rev="2.0.0-cdh4.3.0" conf="*->*,!javadoc"/>
-    <dependency org="org.apache.hadoop" name="hadoop-yarn-server-common" rev="2.0.0-cdh4.3.0" conf="*->*,!javadoc"/>
-    <dependency org="org.apache.hadoop" name="hadoop-yarn-server-nodemanager" rev="2.0.0-cdh4.3.0" conf="*->*,!javadoc"/>
-    <dependency org="org.apache.hadoop" name="hadoop-yarn-server-resourcemanager" rev="2.0.0-cdh4.3.0" conf="*->*,!javadoc"/>
-    <dependency org="org.apache.hadoop" name="hadoop-hdfs" rev="2.0.0-cdh4.3.0" conf="*->*,!javadoc"/>
-    <dependency org="org.apache.hadoop" name="hadoop-mapreduce-client-core" rev="2.0.0-cdh4.3.0" conf="*->*,!javadoc"/>
-    <dependency org="org.apache.hadoop" name="hadoop-streaming" rev="2.0.0-cdh4.3.0" conf="*->*,!javadoc"/>
+    <dependency org="org.apache.hadoop" name="hadoop-common" rev="2.0.0-cdh5.0.0" conf="*->*,!javadoc"/>
+    <dependency org="org.apache.hadoop" name="hadoop-yarn-api" rev="2.0.0-cdh5.0.0" conf="*->*,!javadoc"/>
+    <dependency org="org.apache.hadoop" name="hadoop-yarn-common" rev="2.0.0-cdh5.0.0" conf="*->*,!javadoc"/>
+    <dependency org="org.apache.hadoop" name="hadoop-yarn-server-common" rev="2.0.0-cdh5.0.0" conf="*->*,!javadoc"/>
+    <dependency org="org.apache.hadoop" name="hadoop-yarn-server-nodemanager" rev="2.0.0-cdh5.0.0" conf="*->*,!javadoc"/>
+    <dependency org="org.apache.hadoop" name="hadoop-yarn-server-resourcemanager" rev="2.0.0-cdh5.0.0" conf="*->*,!javadoc"/>
+    <dependency org="org.apache.hadoop" name="hadoop-hdfs" rev="2.0.0-cdh5.0.0" conf="*->*,!javadoc"/>
+    <dependency org="org.apache.hadoop" name="hadoop-mapreduce-client-core" rev="2.0.0-cdh5.0.0" conf="*->*,!javadoc"/>
+    <dependency org="org.apache.hadoop" name="hadoop-streaming" rev="2.0.0-cdh5.0.0" conf="*->*,!javadoc"/>
    
    	<!-- This is for MAS-NN Cloudera -->
 <!--    	<dependency org="org.apache.hadoop" name="hadoop-common" rev="2.0.0-cdh4.1.2" conf="*->*,!javadoc"/> -->
