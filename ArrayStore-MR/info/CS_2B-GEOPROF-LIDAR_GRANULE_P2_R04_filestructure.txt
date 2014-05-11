@@ -1,0 +1,26 @@
+    2B-GEOPROF-LIDAR
+        Geolocation Fields
+            Profile_time (null,factor: 1.0,offset: 0.0,long_name: Seconds since the start of the granule.,units: seconds,valid_range: 0.0|6000.0)
+            UTC_start (null,factor: 1.0,offset: 0.0,long_name: UTC seconds since 00:00 Z of the first profile,units: seconds,valid_range: 0.0|86400.0)
+            TAI_start (null,factor: 1.0,offset: 0.0,long_name: TAI time for the first profile.,units: seconds,valid_range: 0.0|6.0E8)
+            Latitude (null,factor: 1.0,offset: 0.0,long_name: Spacecraft Latitude,units: degrees,valid_range: -90.0|90.0)
+            Longitude (null,factor: 1.0,offset: 0.0,long_name: Spacecraft Longitude,units: degrees,valid_range: -180.0|180.0)
+            Height (null,_FillValue: -9999,factor: 1.0,offset: 0.0,long_name: Height of range bin in Reflectivity/Cloud Mask above reference surface (~ mean sea level).,units: m,valid_range: -5000|30000,missing: -9999,missop: ==)
+            Range_to_intercept (null,factor: 1.0,offset: 0.0,long_name: Range from the spacecraft to the CPR boresight intercept with the geoid,units: km,valid_range: 600.0|800.0)
+            DEM_elevation (null,factor: 1.0,offset: 0.0,long_name: Digital Elevation Map,units: meters,valid_range: -9999|8850,missing: 9999,missop: ==)
+            Vertical_binsize (null,factor: 1.0,offset: 0.0,units: m,missing: -9999.0,missop: ==)
+            Pitch_offset (null,factor: 1.0,offset: 0.0,long_name: Nominal satellite pitch angle offset from nadir,units: degrees,valid_range: -90.0|90.0)
+            Roll_offset (null,factor: 1.0,offset: 0.0,long_name: Nominal satellite roll angle offset from nadir,units: degrees,valid_range: -90.0|90.0)
+        Data Fields
+            Data_quality (null,factor: 1.0,offset: 0.0,long_name: Data Quality,units: --,valid_range: 0|127)
+            Data_status (null,factor: 1.0,offset: 0.0,long_name: Data status flags,units: --,valid_range: 0|127)
+            Data_targetID (null,factor: 1.0,offset: 0.0,long_name: CPR bus orientation (target ID),units: --,valid_range: 0|81)
+            CloudFraction (null,_FillValue: -9,factor: 1.0,offset: 0.0,long_name: Cloud Fraction,valid_range: 0|100,missing: -9,missop: ==)
+            UncertaintyCF (null,_FillValue: -9,factor: 1.0,offset: 0.0,long_name: Uncertainty of Cloud Fraction,valid_range: 0|100,missing: -9,missop: ==)
+            CloudLayers (null,factor: 1.0,offset: 0.0,long_name: Number of hydrometeor layers,valid_range: 0|5,missing: -9,missop: ==)
+            LayerBase (null,_FillValue: 0,factor: 1.0,offset: 0.0,long_name: Height of Layer Base,units: m,valid_range: 0|25000,missing: -99,missop: ==)
+            LayerTop (null,_FillValue: 0,factor: 1.0,offset: 0.0,long_name: Height of layer top,units: m,valid_range: 0|25000,missing: -99,missop: ==)
+            FlagBase (null,_FillValue: -9,factor: 1.0,offset: 0.0,long_name: Flag of layer base,valid_range: 0|3,missing: -9,missop: ==)
+            FlagTop (null,_FillValue: -9,factor: 1.0,offset: 0.0,long_name: Flag of layer top,valid_range: 0|3,missing: -9,missop: ==)
+        Swath Attributes
+            granule_number (null

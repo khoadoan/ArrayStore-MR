@@ -1,0 +1,78 @@
+csv2scidb -s 0 -p NNNNNNNNNNNNNNN < trmm100_scidb.csv > trmm100.scidb
+csv2scidb -s 0 -p NNNNNNNNNNNN < cloudsat100_scidb.csv > cloudsat100.scidb
+
+create array trmm_1c21_t<lat:int64,lon:int64,y:int64,d:int64,t:int64,systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double>[i=0:*,20000,0];
+create array trmm_1c21_i<systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [lat=-900000:900000,10000,100,lon=-1800000:1800000,10000,100,y=1900:*,1,0,d=1:366,1,0,t=0:86400000,100000,0];
+create array trmm_1c21<systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [lat=-900000:900000,10000,100,lon=-1800000:1800000,10000,100,y=1900:*,1,0,d=1:366,1,0,t=0:86400000,100000,0];
+
+create array trmm <systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [lat=-900000:900000,10000,100,lon=-1800000:1800000,10000,100,y=1900:*,1,0,d=1:366,1,0,t=0:86400000,100000,0];
+
+
+create array cs_2b_geoprof_t<lat:int64,lon:int64,y:int64,d:int64,t:int64,Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double>[i=0:*,30000,0];
+create array cs_2b_geoprof_i<Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [lat=-900000:900000,10000,100,lon=-1800000:1800000,10000,100,y=1900:*,1,0,d=1:366,1,0,t=0:86400000,100000,0];
+create array cs_2b_geoprof<Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [lat=-900000:900000,10000,100,lon=-1800000:1800000,10000,100,y=1900:*,1,0,d=1:366,1,0,t=0:86400000,100000,0];
+
+create array cs<Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [lat=-900000:900000,10000,100,lon=-1800000:1800000,10000,100,y=1900:*,1,0,d=1:366,1,0,t=0:86400000,100000,0];
+
+iquery -naq "load(trmm_1c21_t, '/home/khoa/arrays/mr/data/text/2007/trmm_text/trmm100.scidb')"
+iquery -naq "redimension_store(trmm_1c21_t,trmm_1c21)" 
+
+
+iquery -naq "load(cs_2b_geoprof_t, '/home/khoa/arrays/mr/data/text/2007/cloudsat_text/cloudsat100.scidb')"
+iquery -naq "redimension_store(cs_2b_geoprof_t,cs_2b_geoprof)" 
+
+
+
+
+
+
+
+create array csg_t <gx:int64, gy:int64, gz:int64, gt:int64, x:int64, y:int64, z:int64, year:int64, doy:int64, t:int64, Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double>[i=0:*,1000000,0];
+
+create array csg <x:int64, y:int64, z:int64, Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [gx=-637:637,1,1, gy=-637:637,1,1, gz=-637:637,1,1, gt=0:96,1,1, year=1900:*,1,0,doy=1:366,1,0, t=0:86400000,3600000,600000];
+
+create array trg <x:int64, y:int64, z:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [gx=-637:637,637,2, gy=-637:637,637,2, gz=-637:637,637,2, gt=0:96,4,1, year=1900:*,1,0,doy=1:366,1,0, t=0:86400000,3600000,600000];
+
+
+create array trg_t <gx:int64, gy:int64, gz:int64, gt:int64, x:int64, y:int64, z:int64, year:int64, doy:int64, t:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double>[i=0:*,1000000,0];
+
+
+create array csg_i <x:int64, y:int64, z:int64, Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [gx=-637:637,85,0, gy=-637:637,85,0, gz=-637:637,85,0, gt=0:96,6,0, year=1900:*,1,0,doy=1:366,1,0, t=0:86400000,1000,0];
+
+create array trg_i <x:int64, y:int64, z:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [gx=-637:637,170,0, gy=-637:637,170,0, gz=-637:637,170,0, gt=0:96,12,0, year=1900:*,1,0,doy=1:366,7,0, t=0:86400000,1000,0];
+
+create array trg <x:int64, y:int64, z:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [gx=-637:637,637,2, gy=-637:637,637,2, gz=-637:637,637,2, gt=0:96,4,1, year=1900:*,1,0,doy=1:366,1,0, t=0:86400000,3600000,600000];
+
+loadcsv.py -n 0 -t NNNNNNNNNNNNNNNNN -a 'csg_t' -i '/home/khoa/arrays/mr/data/text/2007/cloudsat100_grid_xyz/part-m-00000'
+iquery -naq "redimension_store(csg_t,csg)" 
+
+loadcsv.py -n 0 -t NNNNNNNNNNNNNNNNNNNN -a 'trg_t' -i '/home/khoa/arrays/mr/data/text/2007/trmm100_grid_xyz/part-m-00000'
+iquery -naq "redimension_store(csg_t,csg)" 
+
+
+
+
+cross_join(csg_i as a, trg_i as b, a.year, b.year, a.doy, b.doy, a.gx, b.gx, a.gy, b.gy, a.gz, b.gz, a.gt, b.gt);
+
+
+aggregate(apply(cross_join(redimension(apply(subarray(csg_t, 0, 10), ts, t/100), csg_i) as a, redimension(apply(subarray(trg_t, 0, 10), ts, t/100), trg_i) as b, a.year, b.year, a.doy, b.doy, a.gx, b.gx, a.gy, b.gy, a.gz, b.gz, a.gt, b.gt), distance, sqrt((x-x_2)*(x-x_2) + (y-y_2)*(y-y_2) + (z-z_2)*(z-z_2))), min(distance));
+
+aggregate(apply(csg_trg_t, distance, (x-x_2)*(x-x_2) + (y-y_2)*(y-y_2) + (z-z_2)*(z-z_2)), min(distance))
+
+
+store(cross_join(redimension(apply(subarray(csg_t, 0, 10), ts, t/100), csg_i) as a, redimension(apply(subarray(trg_t, 0, 10), ts, t/100), trg_i) as b, a.year, b.year, a.doy, b.doy, a.gx, b.gx, a.gy, b.gy, a.gz, b.gz, a.gt, b.gt), csg_trg_t)
+
+create array cs_2b_geoprof_grid_t <gx:int64, gy:int64, gz:int64, gt:int64, x:int64, y:int64, z:int64, year:int64, doy:int64, t:int64, Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double>[i=0:*,1000000,0];
+create array cs_2b_geoprof_grid <x:int64, y:int64, z:int64, Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [gx=-637:637,637,2, gy=-637:637,637,2, gz=-637:637,637,2, gt=0:96,4,1, year=1900:*,1,0,doy=1:366,1,0, t=0:86400000,3600000,600000];
+csv2scidb -s 0 -p NNNNNNNNNNNNNNNNN < /home/kdoan1/mr/cloudsat_grid_xyz.csv > /home/kdoan1/mr/cloudsat_grid_xyz.scidb
+iquery -naq "load(cs_2b_geoprof_grid_t, '/home/kdoan1/mr/cloudsat_grid_xyz.scidb')"
+iquery -naq "redimension_store(cs_2b_geoprof_t,cs_2b_geoprof)" 
+loadcsv.py -n 0 -t NNNNNNNNNNNNNNNNN -a 'cs_2b_geoprof_grid_t' -i '/home/kdoan1/mr/cloudsat_grid_xyz.csv'
+
+create array trmm_1c21_grid_t <gx:int64, gy:int64, gz:int64, gt:int64, x:int64, y:int64, z:int64, year:int64, doy:int64, t:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double>[i=0:*,1000000,0];
+create array trmm_1c21_grid <systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [gx=-637:637,10,1, gy=-637:637,10,1, gz=-637:637,10,1, gt=0:96,4,1, x=-6371:6371,100,10, y=-6371:6371,100,10, z=-6371:6371,100,10, year=1900:*,1,0,doy=1:366,1,0, t=0:86400000,100000,0];
+csv2scidb -s 0 -p NNNNNNNNNNNNNNNNNNNN < trmm100_scidb.csv > trmm100.scidb
+iquery -naq "load(trmm_1c21_grid_t, '/home/kdoan1/trmm_grid_xyz.csv')"
+iquery -naq "redimension_store(trmm_1c21_grid_t,trmm_1c21_grid)" 
+
+cross_join(csg_i as a, trg_i as b, a.year, b.year, a.doy, b.doy, a.gx, b.gx, a.gy, b.gy, a.gz, b.gz, a.gt, b.gt);

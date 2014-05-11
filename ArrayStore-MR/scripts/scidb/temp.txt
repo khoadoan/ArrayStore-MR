@@ -1,0 +1,55 @@
+create array trg_i <x:int64, y:int64, z:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [gx=-637:637,170,0, gy=-637:637,170,0, gz=-637:637,170,0, gt=0:96,12,0, year=1900:*,1,0,doy=1:366,7,0, t=0:86400000,1000,0];
+
+create array trg_i <x:int64, y:int64, z:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [gx=-637:637,170,0, gy=-637:637,170,0, gz=-637:637,170,0, gt=0:96,12,0, year=1900:*,1,0,doy=1:366,7,0, t=0:86400000,1000,0];
+slow redimension
+
+create array trg_i <x:int64, y:int64, z:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [gx=-637:637,170,0, gy=-637:637,170,0, gz=-637:637,170,0, gt=0:96,16,0, year=1990:2020,1,0,doy=1:366,1,0, t=0:86400000,300000,0];
+
+create array trg_i <x:int64, y:int64, z:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [gx=-637:637,170,0, gy=-637:637,170,0, gz=-637:637,170,0, gt=0:96,16,0, year=1990:2020,1,0,doy=1:366,1,0, t=0:86400000,300000,0];
+
+create array trg_i <x:int64, y:int64, z:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [gx=-637:637,17,0, gy=-637:637,17,0, gz=-637:637,17,0, gt=0:96,16,0, year=1990:2020,1,0,doy=1:366,20,0, t=0:86400000,900000,0];
+
+
+time iquery -p 1339 -naq 'redimension_store(khoa_trg_t, khoa_trg_i)'
+	real    0m29.046s
+	user    0m0.009s
+	sys     0m0.00
+time iquery -p 1339 -naq 'redimension_store(khoa_csg_t, khoa_csg_i)'
+	real    0m30.265s
+	user    0m0.009s
+	sys     0m0.007s
+time iquery -p 1339 -naq 'store(join(khoa_csg_i, khoa_trg_i), khoa_csg_trg_i)'
+	real    0m2.985s
+	user    0m0.008s
+	sys     0m0.007s
+time iquery -p 1339 -naq 'store(cross_join(khoa_csg_i as a, khoa_trg_i as b, a.year, b.year, a.doy, b.doy, a.gx, b.gx, a.gy, b.gy, a.gz, b.gz, a.gt, b.gt), khoa_csg_trg_i)'
+	real    40m57.604s
+	user    0m0.011s
+	sys     0m0.006s
+
+
+create array trg_i <x:int64, y:int64, z:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [gx=-637:637,255,0, gy=-637:637,637,0, gz=-637:637,637,0, gt=0:96,16,0, year=1990:2019,30,0, doy=1:366,20,0, ts=0:864000,9000,0];
+
+create array csg_i <x:int64,y:int64,z:int64,Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [gx=-637:637,255,0, gy=-637:637,637,0, gz=-637:637,637,0, gt=0:96,16,0, year=1990:2019,30,0, doy=1:366,20,0, ts=0:864000,9000,0];
+
+create array tr_i <systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [x=-6371:6371,1000,0, y=-6371:6371,1000,0, z=-6371:6371,1000,0, year=1990:2019,30,0, doy=1:366,20,0, ts=0:864000,9000,0, gt=0:96,16,0];
+
+create array cs_i <Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [x=-6371:6371,1000,0, y=-6371:6371,1000,0, z=-6371:6371,1000,0, year=1990:2019,30,0, doy=1:366,20,0, ts=0:864000,9000,0, gt=0:96,16,0];
+
+ON MAS
+create array cs_2b_geoprof_i <Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [year=1990:2019,30,0, doy=1:366,7,0, ts=0:864000,60000,0, x=-6371:6371,1000,0, y=-6371:6371,1000,0, z=-6371:6371,1000,0, gt=0:96,16,0];
+create array cs_2b_geoprof <Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [year=1990:2019,30,0, doy=1:366,7,0, ts=0:864000,60000,0, x=-6371:6371,1000,0, y=-6371:6371,1000,0, z=-6371:6371,1000,0, gt=0:96,16,0];
+
+create array trmm_1c21_i <systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [year=1990:2019,30,0, doy=1:366,7,0, ts=0:864000,60000,0, x=-6371:6371,1000,0, y=-6371:6371,1000,0, z=-6371:6371,1000,0, gt=0:96,16,0];
+
+create array trmm_1c21 <systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [year=1990:2019,30,0, doy=1:366,7,0, ts=0:864000,60000,0, x=-6371:6371,1000,0, y=-6371:6371,1000,0, z=-6371:6371,1000,0, gt=0:96,16,0];
+
+redimension_store(subarray(trmm_1c21_grid_t, 0, 499999), trmm_1c21_i)
+
+
+cross_join(csg_i as a, trg_i as b, a.year, b.year, a.doy, b.doy, a.gx, b.gx, a.gy, b.gy, a.gz, b.gz, a.gt, b.gt);
+
+bestMatch(cs_i, tr_i, 1)
+	[('cstr<Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double,match_systemNoise:double,match_sysNoiseWarnFlag:double,match_minEchoFlag:double,match_binEllipsoid:double,match_binDIDHmean:double,match_scLocalZenith:double,match_scRange:double,match_landOceanFlag:double,match_surfWarnFlag:double,match_binSurfPeak:double,match_x:int64,match_y:int64,match_z:int64,match_year:int64,match_doy:int64,match_ts:int64,match_gt:int64> [x=-6371:6371,1000,0,y=-6371:6371,1000,0,z=-6371:6371,1000,0,year=1990:2019,30,0,doy=1:366,20,0,ts=0:864000,9000,0,gt=0:96,16,0]')]
+
+cross_join(min(apply(bestMatch(cs_i, tr_i, 1), distance, (x-match_x)*(x-match_x) + (y-match_y)*(y-match_y) + (z-match_z)*(x-match_z)) as cstr, distance, gt), cstr)

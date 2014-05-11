@@ -1,0 +1,29 @@
+JOIN using Year 2007
+		HadoopVersion   PigVersion      UserId  StartedAt       FinishedAt      Features
+		2.0.0-cdh4.1.2  0.10.0-cdh4.1.2 kdoan1  2013-09-10 11:28:06     2013-09-10 11:46:50     HASH_JOIN,FILTER
+
+		Success!
+
+		Job Stats (time in seconds):
+		JobId   Maps    Reduces MaxMapTime      MinMapTIme      AvgMapTime      MaxReduceTime   MinReduceTime   AvgReduceTime   Alias   Feature Outputs
+		job_201309051206_0128   1       4       1042    1042    1042    68      51      61      cs,cs_grid,cs_tr,csp,tr,tr_grid HASH_JOIN       hdfs://mas-nn-ib:8020/user/kdoan1/cloudsat_trmm2007,
+
+		Input(s):
+		Successfully read 185338575 records from: "hdfs://mas-nn-ib:8020/user/kdoan1/cloudsat/text/cloudsat2007"
+		Successfully read 0 records from: "hdfs://mas-nn-ib:8020/user/kdoan1/trmm/text/trmm2007"
+
+		Output(s):
+		Successfully stored 0 records in: "hdfs://mas-nn-ib:8020/user/kdoan1/cloudsat_trmm2007"
+
+		Counters:
+		Total records written : 0
+		Total bytes written : 0
+		Spillable Memory Manager spill count : 0
+		Total bags proactively spilled: 0
+		Total records proactively spilled: 0
+
+		Job DAG:
+		job_201309051206_0128
+
+
+		2013-09-10 11:46:50,893 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!

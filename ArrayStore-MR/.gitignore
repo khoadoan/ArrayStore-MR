@@ -1,0 +1,9 @@
+build/
+dist/
+docs/
+etc/*.sh
+lib/
+/etc
+/test
+/tmp
+/ojalgo

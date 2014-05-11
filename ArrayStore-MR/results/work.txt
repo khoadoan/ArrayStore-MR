@@ -1,0 +1,139 @@
+Original Arrays, with Lat/Lon, scale by 10000 and t is in miliseconds. We'd like to compare operations such as dice/slice/aggregate. It doesn't matter what type of coordinates the arrays are in.
+
+create array trll_t<lat:int64,lon:int64,year:int64,doy:int64,t:int64,systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double>[i=0:*,100000,0];
+
+create array csll_t<lat:int64,lon:int64,year:int64,doy:int64,t:int64,Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double>[i=0:*,100000,0];
+
+
+create array trll<systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [lat=-900000:900000,450000,100,lon=-1800000:1800000,900000,100,year=1990:2019,30,0,doy=1:366,7,0,ts=0:864000,30000,0];
+
+create array csll<Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [lat=-900000:900000,450000,0,lon=-1800000:1800000,900000,0,year=1990:2019,30,0,doy=1:366,7,0,ts=0:864000,30000,0];
+
+
+loadcsv.py -n 0 -t NNNNNNNNNNNN -a 'csll_t' -i '/home/khoa/arrays/mr/data/text/2007/cloudsat1-7_latlon.csv'
+iquery -naq "redimension_store(apply(csll_t, ts, t/100),csll)" 
+
+loadcsv.py -n 0 -t NNNNNNNNNNNNNNN -a 'trll_t' -i '/home/khoa/arrays/mr/data/text/2007/trmm1-7_latlon.csv'
+iquery -naq "redimension_store(trll_t,trll)" 
+
+
+Queries:
+
+1) Find average reflectivity of all regions around the equator, for the month of January, at Noon.
+
+	SCIDB
+		+++ avg(filter(between(csll, -10000, -1800000, 2007, 1, 414000, 10000, 1800000, 2007, 31, 450000), Radar_Reflectivity > -8888), Radar_Reflectivity);
+		+++ avg(between(filter(csll, Radar_Reflectivity > -8888), -10000, -1800000, 2007, 1, 414000, 10000, 1800000, 2007, 31, 450000), Radar_Reflectivity);
+			7 days (VM):
+				[(-3286.97)]
+					real    0m0.078s
+					user    0m0.000s
+					sys     0m0.008s
+			181 days (VM):
+				real    0m11.399s
+				user    0m0.008s
+				sys     0m0.000s
+		+++ time iquery -aq 'avg(filter(between(csll1, -100000, -1800000, 2007, 1, 414000, 100000, 1800000, 2007, 181, 450000), Radar_Reflectivity > -8888), Radar_Reflectivity);'
+			real    0m6.082s
+			user    0m0.008s
+			sys     0m0.000s
+		+++ time iquery -aq 'avg(filter(csll1, Radar_Reflectivity > -8888), Radar_Reflectivity);'
+			[(-3297.95)]
+
+			real    1m47.145s
+			user    0m0.008s
+			sys     0m0.016s
+		**interesting fact: count(filter(between(csll, -10000, -1800000, 2007, 1, 414000, 10000, 1800000, 2007, 31, 450000), Radar_Reflectivity > -8888)) runs very slow
+			
+		***legends: csll1 - 181 days, csll - 7 days.
+	MR
+		a = load 'cloudsat1-7_latlon.gz' using PigStorage(',') as (lat:long, lon:long, year:int, doy:int, t:long, a1:double, a2:double, a3:double, a4:double, a5:double, a6:double, Radar_Reflectivity:double);
+		a = load 'cloudsat12_latlon.gz' using PigStorage(',') as (lat:long, lon:long, year:int, doy:int, t:long, a1:double, a2:double, a3:double, a4:double, a5:double, a6:double, Radar_Reflectivity:double);
+		
+		******
+		b = filter a by lat <= 10000 and lat >= -10000 and t >= 41400000 and t <= 45000000 and Radar_Reflectivity > -8888 and doy <= 31;
+		c = group b ALL;
+		d = foreach c generate AVG(b.Radar_Reflectivity);
+		dump d;
+			7 days (VM): 
+				HadoopVersion   PigVersion      UserId  StartedAt       FinishedAt      Features
+				2.0.0-cdh4.3.0  0.11.0-cdh4.3.0 khoa    2013-10-02 19:43:56     2013-10-02 19:44:49     GROUP_BY,FILTER
+		******
+		b = filter a by Radar_Reflectivity > -8888;
+		c = group b ALL;
+		d = foreach c generate AVG(b.Radar_Reflectivity);
+		dump d;
+			181 days (VM)
+				HadoopVersion   PigVersion      UserId  StartedAt       FinishedAt      Features
+				2.0.0-cdh4.3.0  0.11.0-cdh4.3.0 khoa    2013-10-02 20:27:09     2013-10-02 20:44:15     GROUP_BY,FILTER
+
+				Success!
+
+				Job Stats (time in seconds):
+				JobId   Maps    Reduces MaxMapTime      MinMapTIme      AvgMapTime      MedianMapTime   MaxReduceTime   MinReduceTime   AvgReduceTime   MedianReducetime        Alias   Feature Outputs
+				job_1380748683511_0010  2       1       1004    997     1001    1001    7       7       7       7       a,b,c,d GROUP_BY,COMBINER       hdfs://localhost:8020/tmp/temp-160396157/tmp-163479155,
+
+		
+		
+JOURNAL
+	Make dataset for day 1-7
+	Run load into scidb and redimension into csll and trll
+	Run AVG query in scidb. This seems to run very fast. But when doing a count, instead, it's hanging.
+	Run AVG in PIG. Give different result. Also run very slow. ---> MR: using => instead of >=, 2 different operators.
+	Now making dataset for first 2 quarters.
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TEMP
+45986827
+time iquery -naq "insert(redimension(apply(subarray(csll_t, 0, 9999999), ts, t/100),csll1), csll1)"
+time iquery -naq "insert(redimension(apply(subarray(csll_t, 10000000, 19999999), ts, t/100),csll1), csll1)"
+time iquery -naq "insert(redimension(apply(subarray(csll_t, 20000000, 29999999), ts, t/100),csll1), csll1)"
+time iquery -naq "insert(redimension(apply(subarray(csll_t, 20000000, 49999999), ts, t/100),csll1), csll1)"
+real    2m4.310s
+user    0m0.008s
+sys     0m0.004s
+time iquery -naq "insert(redimension(apply(subarray(csll_t, 10000000, 19999999), ts, t/100),csll1), csll1)"
+real    2m59.534s
+user    0m0.000s
+sys     0m0.028s
+time iquery -naq "insert(redimension(apply(subarray(csll_t, 20000000, 29999999), ts, t/100),csll1), csll1)"
+real    2m54.617s
+user    0m0.000s
+sys     0m0.036s
+time iquery -naq "insert(redimension(apply(subarray(csll_t, 20000000, 49999999), ts, t/100),csll1), csll1)"
+real    10m49.644s
+user    0m0.000s
+sys     0m0.064s
+
+
+
+
+
+
+create array cs_2b_geoprof_t<lat:int64,lon:int64,y:int64,d:int64,t:int64,Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double>[i=0:*,100000,0];
+
+create array cs_2b_geoprof <Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [year=1990:2019,30,0, doy=1:366,7,0, ts=0:864000,60000,0, x=-6371:6371,1000,0, y=-6371:6371,1000,0, z=-6371:6371,1000,0, gt=0:96,16,0];
+
+create array trmm_1c21 <systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [year=1990:2019,30,0, doy=1:366,7,0, ts=0:864000,60000,0, x=-6371:6371,1000,0, y=-6371:6371,1000,0, z=-6371:6371,1000,0, gt=0:96,16,0];
+
+between(cs_2b_geoprof, 2007, 1, 414000, -6371, -6371, -10, 0, 2007, 365, 450000, 6371, 6371, 10, 96)
+
+count(between(cs_2b_geoprof, 1990, 1, 396000, -6371, -6371, 6321, 0, 2019, 365, 468000, 6371, 6371, 6371, 96));
+count(filter(cs_2b_geoprof, z >= 6321))
+count(filter(cs_2b_geoprof, Radar_Reflectivity >= -5000));
+
+min(cs_2b_geoprof, Radar_Reflectivity);

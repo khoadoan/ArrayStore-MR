@@ -1,0 +1,96 @@
+Query was executed successfully
+From 8900000 to 8999999
+         Redimensioning..
+Query was executed successfully
+         Inserting..
+Query was executed successfully
+From 9000000 to 9099999
+         Redimensioning..
+Query was executed successfully
+         Inserting..
+Query was executed successfully
+From 9100000 to 9199999
+         Redimensioning..
+Query was executed successfully
+         Inserting..
+Query was executed successfully
+From 9200000 to 9299999
+         Redimensioning..
+Query was executed successfully
+         Inserting..
+Query was executed successfully
+From 9300000 to 9399999
+         Redimensioning..
+Query was executed successfully
+         Inserting..
+Query was executed successfully
+From 9400000 to 9499999
+         Redimensioning..
+SystemException in file: src/network/BaseConnection.h function: receive line: 294
+Error id: scidb::SCIDB_SE_NETWORK::SCIDB_LE_CANT_SEND_RECEIVE
+Error description: Network error. Cannot send or receive network messages.
+         Inserting..
+79 [0x7f16e7beb720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+79 [0x7f16e7beb720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+iquery SystemException in file: src/network/BaseConnection.cpp function: connect line: 262
+Error id: scidb::SCIDB_SE_NETWORK::SCIDB_LE_CONNECTION_ERROR
+Error description: Network error. Error #system:111 when connecting to localhost:1239.
+From 9500000 to 9599999
+         Redimensioning..
+2 [0x7fd4dd9a2720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+2 [0x7fd4dd9a2720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+iquery SystemException in file: src/network/BaseConnection.cpp function: connect line: 262
+Error id: scidb::SCIDB_SE_NETWORK::SCIDB_LE_CONNECTION_ERROR
+Error description: Network error. Error #system:111 when connecting to localhost:1239.
+         Inserting..
+2 [0x7f2da79a8720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+2 [0x7f2da79a8720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+iquery SystemException in file: src/network/BaseConnection.cpp function: connect line: 262
+Error id: scidb::SCIDB_SE_NETWORK::SCIDB_LE_CONNECTION_ERROR
+Error description: Network error. Error #system:111 when connecting to localhost:1239.
+From 9600000 to 9699999
+         Redimensioning..
+2 [0x7fbc78d8f720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+2 [0x7fbc78d8f720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+iquery SystemException in file: src/network/BaseConnection.cpp function: connect line: 262
+Error id: scidb::SCIDB_SE_NETWORK::SCIDB_LE_CONNECTION_ERROR
+Error description: Network error. Error #system:111 when connecting to localhost:1239.
+         Inserting..
+2 [0x7f1a3641c720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+2 [0x7f1a3641c720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+iquery SystemException in file: src/network/BaseConnection.cpp function: connect line: 262
+Error id: scidb::SCIDB_SE_NETWORK::SCIDB_LE_CONNECTION_ERROR
+Error description: Network error. Error #system:111 when connecting to localhost:1239.
+From 9700000 to 9799999
+         Redimensioning..
+3 [0x7ffb5f355720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+3 [0x7ffb5f355720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+iquery SystemException in file: src/network/BaseConnection.cpp function: connect line: 262
+Error id: scidb::SCIDB_SE_NETWORK::SCIDB_LE_CONNECTION_ERROR
+Error description: Network error. Error #system:111 when connecting to localhost:1239.
+         Inserting..
+2 [0x7f193c6c1720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+2 [0x7f193c6c1720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+iquery SystemException in file: src/network/BaseConnection.cpp function: connect line: 262
+Error id: scidb::SCIDB_SE_NETWORK::SCIDB_LE_CONNECTION_ERROR
+Error description: Network error. Error #system:111 when connecting to localhost:1239.
+From 9800000 to 9899999
+         Redimensioning..
+2 [0x7fefe2c0f720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+2 [0x7fefe2c0f720] FATAL scidb.services.network null - Error #system:111 when connecting to localhost:1239
+iquery SystemException in file: src/network/BaseConnection.cpp function: connect line: 262
+Error id: scidb::SCIDB_SE_NETWORK::SCIDB_LE_CONNECTION_ERROR
+Error description: Network error. Error #system:111 when connecting to localhost:1239.
+         Inserting..
+Query was executed successfully
+From 9900000 to 9999999
+         Redimensioning..
+^C       Inserting..
+^Z
+[1]+  Stopped                 python scidb_incr_insert.py
+[kdoan1@mas-nn python]$ jobs
+[1]+  Stopped                 python scidb_incr_insert.py
+[kdoan1@mas-nn python]$ kill %1
+[kdoan1@mas-nn python]$ jobs
+[1]+  Terminated              python scidb_incr_insert.py
+[

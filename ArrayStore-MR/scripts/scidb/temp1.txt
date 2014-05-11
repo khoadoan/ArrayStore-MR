@@ -1,0 +1,79 @@
+store(apply(bestMatch(csxyz, trxyz, 1), dxyz, sqrt(pow(x-match_x, 2) + pow(y-match_y, 2) + pow(z-match_z, 2)), dt, abs(t-match_t), w, y >= 0), temp1);
+	throw errors
+store(apply(temp, dxyz, sqrt(pow(x-match_x, 2) + pow(y-match_y, 2) + pow(z-match_z, 2)), dt, abs(t-match_t), half, y >= 0), temp1);
+	so must use this one instead
+create array cstrxyz_match_template<Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double,match_orbit:int64,match_systemNoise:double,match_sysNoiseWarnFlag:double,match_minEchoFlag:double,match_binEllipsoid:double,match_binDIDHmean:double,match_scLocalZenith:double,match_scRange:double,match_landOceanFlag:double,match_surfWarnFlag:double,match_binSurfPeak:double,match_x:int64,match_y:int64,match_z:int64,match_year:int64,match_doy:int64,match_t:int64,dxyz:double,dt:double, x:int64, y:int64, z:int64> [year=2000:2019,10,0,doy=1:366,10,0,t=0:864000,9000,0,orbit=0:99999,1000,0,half=0:1,1,0];
+redimension_store(temp1, cstrxyz_match_template);
+store(aggregate(cstrxyz_match_template, min(dxyz), year, doy, orbit, half), temp2);
+
+create array csxyz1 <orbit:int64,Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [x=-6371:6371,6371,0,y=-6371:6371,6371,0,z=-6371:6371,6371,0,year=2000:2019,10,0,doy=1:366,10,0,t=0:864000,18000,0];
+create array trxyz1<orbit:int64,systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [x=-6371:6371,6371,0,y=-6371:6371,6371,0,z=-6371:6371,6371,0,year=2000:2019,10,0,doy=1:366,10,0,t=0:864000,18000,0];
+store(apply(cstr_m1, dxyz, sqrt(pow(x-match_x, 2) + pow(y-match_y, 2) + pow(z-match_z, 2)), dt, abs(t-match_t), half, y >= 0), cstr_a1);
+create array cstr_mt_1<Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double,match_orbit:int64,match_systemNoise:double,match_sysNoiseWarnFlag:double,match_minEchoFlag:double,match_binEllipsoid:double,match_binDIDHmean:double,match_scLocalZenith:double,match_scRange:double,match_landOceanFlag:double,match_surfWarnFlag:double,match_binSurfPeak:double,match_x:int64,match_y:int64,match_z:int64,match_year:int64,match_doy:int64,match_t:int64,dxyz:double,dt:double,x:int64,y:int64,z:int64> [year=2000:2019,10,0,doy=1:366,10,0,t=0:864000,18000,0,orbit=0:99999,1000,0,half(bool)=2,1,0];
+redimension_store(cstr_a1, cstr_mt_1);
+store(aggregate(cstr_mt_1, min(dxyz), year, doy, orbit, half), cstr_b1);
+
+
+
+
+
+
+store(aggregate(redimension(temp1, cstrxyz_match_template), min(dxyz), year, doy, orbit, half), temp2);
+store(bestMatch(redimension(csxyz, csxyz_1D), redimension(trxyz, trxyz_1D), 9000), temp);
+
+create array csydt<orbit:int64,Height:double, x:int64,y:int64,z:int64> [year=2000:2019,10,0,doy=1:366,10,0,t=0:864000,9000,0];
+create array trydt<orbit:int64,systemNoise:double, x:int64,y:int64,z:int64> [year=2000:2019,10,0,doy=1:366,10,0,t=0:864000,9000,0];
+match(csxyz_1D, trxyz_1D, 1, 1);
+
+best match only works for matching within chunks. does not work if the actual best match is outside the chunk
+
+create array a1<val:int32> [i=1:6,2,0,j=11:16,2,0];
+create array a2<val:int32> [i=1:6,2,0,j=11:16,2,0];
+store(build_sparse(a1, (i+j)*10, (i+j)%2 = 0), a1);
+store(build_sparse(a2, (i+j)*100, (i+j)%2 = 1), a2);
+store(build_sparse(a2, (i+j)*100, (i%2) = 1), a2);
+
+store(build_sparse(<val:int32> [i=1:4,2,1,j=11:14,2,1], (i+j)*10, (i+j)%2 = 0), a1);
+store(build_sparse(<val:int32> [i=1:4,2,1,j=11:14,2,1], (i+j)*100, (i%2) = 1), a2);
+
+
+AFL% build_sparse(a1, (i+j)*10, (i+j)%2 = 0);
+)*100, (i+j)%2 = 1);i,j,val
+1,11,120
+2,12,140
+1,13,140
+2,14,160
+1,15,160
+2,16,180
+3,11,140
+4,12,160
+3,13,160
+4,14,180
+3,15,180
+4,16,200
+5,11,160
+6,12,180
+5,13,180
+6,14,200
+5,15,200
+6,16,220
+AFL% build_sparse(a2, (i+j)*100, (i+j)%2 = 1);
+i,j,val
+1,12,1300
+2,11,1300
+1,14,1500
+2,13,1500
+1,16,1700
+2,15,1700
+3,12,1500
+4,11,1500
+3,14,1700
+4,13,1700
+3,16,1900
+4,15,1900
+5,12,1700
+6,11,1700
+5,14,1900
+6,13,1900
+5,16,2100
+6,15,2100

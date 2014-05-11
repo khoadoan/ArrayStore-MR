@@ -1,0 +1,28 @@
+TRMM or CloudSat arrays are named as following:
+    trmm_[product][_type]
+    cs_[product][_type]
+    where 
+        [product]: measurement product of the satellite
+        [_type]: transformation type of the original data. 
+            eg: trmm_1c21_grid, cs_2b_geoprof_grid        -> gridded arrays of the original data
+                trmm_1c21_grid_t, cs_2b_geoprof_grid_t    -> 1-D arrays of the loading process
+                trmm_1c21_grid_i, cs_2b_geoprof_grid_i    -> intermediate arrays for incremental insertion into main array (trmm_1c21_grid, and cs_2b_geoprof_grid respectively)
+
+Attributes:
+        x, y, z: xyz coordinates of the data points (unit: km). Consider the earth is round and R = 6371km
+        gx, gy, gz: gridded xyz coordinates of the data points. This is done by, for example, ROUND(x/10).
+        year, doy, t: year, day of the year, and milliseconds offset from the start of the day.
+        gt: gridded ms offset of t, in 15-minute interval -> ROUND(t/(15*60*1000))
+        others: other attributes specific to each satellites (see satellite docs)
+        
+create array trmm_1c21_grid <x:int64, y:int64, z:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [gx=-637:637,17,0, gy=-637:637,17,0, gz=-637:637,17,0, gt=0:96,16,0, year=1990:2020,1,0,doy=1:366,20,0, t=0:86400000,900000,0];
+
+create array trmm_1c21_grid_i <x:int64, y:int64, z:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double> [gx=-637:637,17,0, gy=-637:637,17,0, gz=-637:637,17,0, gt=0:96,16,0, year=1990:2020,1,0,doy=1:366,20,0, t=0:86400000,900000,0];
+
+create array trmm_1c21_grid_t <gx:int64, gy:int64, gz:int64, gt:int64, x:int64, y:int64, z:int64, year:int64, doy:int64, t:int64, systemNoise:double,sysNoiseWarnFlag:double,minEchoFlag:double,binEllipsoid:double,binDIDHmean:double,scLocalZenith:double,scRange:double,landOceanFlag:double,surfWarnFlag:double,binSurfPeak:double>[i=0:*,1000000,0];
+
+create array cs_2b_geoprof_grid <x:int64, y:int64, z:int64, Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [gx=-637:637,17,0, gy=-637:637,17,0, gz=-637:637,17,0, gt=0:96,16,0, year=1990:2020,1,0,doy=1:366,20,0, t=0:86400000,900000,0];
+
+create array cs_2b_geoprof_grid_i <x:int64, y:int64, z:int64, Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double> [gx=-637:637,17,0, gy=-637:637,17,0, gz=-637:637,17,0, gt=0:96,16,0, year=1990:2020,1,0,doy=1:366,20,0, t=0:86400000,900000,0];
+
+create array cs_2b_geoprof_grid_t <gx:int64, gy:int64, gz:int64, gt:int64, x:int64, y:int64, z:int64, year:int64, doy:int64, t:int64, Height:double,Range_to_intercept:double,DEM_elevation:double,Vertical_binsize:double,Pitch_offset:double,Roll_offset:double,Radar_Reflectivity:double>[i=0:*,1000000,0];

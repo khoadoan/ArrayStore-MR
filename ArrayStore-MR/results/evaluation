@@ -1,0 +1,77 @@
+grid data points
+	scidb 
+		not possible
+	pig
+		easily
+		
+		
+		
+		
+		
+		
+		
+test-nn
+	join of xyg gridded data
+		cs_grid = load 'cloudsat_grid_xyz.gz' using PigStorage(',') as (gx:int, gy:int, gz:int, gts:int,  x:int, y:int, z:int, year:int, doy:int, t:int, a1:double, a2:double, a3:double, a4:double, a5:double, a6:double, a7:double);
+		tr_grid = load 'trmm_grid_xyz.gz' using PigStorage(',') as (gx:int, gy:int, gz:int, gts:int,  x:int, y:int, z:int, year:int, doy:int, t:int, a1:double, a2:double, a3:double, a4:double, a5:double, a6:double, a7:double, a8:double, a9:double, a10:double);
+
+
+		cs_tr = JOIN cs_grid BY (year, doy, gx, gy, gz, gts), tr_grid BY (year, doy, gx, gy, gz, gts); 
+		cs_tr = foreach cs_tr generate cs_grid::year as year, cs_grid::doy as doy, cs_grid::gts as gts, ((cs_grid::x - tr_grid::x)*(cs_grid::x - tr_grid::x) + (cs_grid::y - tr_grid::y)*(cs_grid::y - tr_grid::y) + (cs_grid::z - tr_grid::z)*(cs_grid::z - tr_grid::z)) as distance, TOTUPLE(TOTUPLE(cs_grid::a1, cs_grid::a2, cs_grid::a3, cs_grid::a4, cs_grid::a5, cs_grid::a6, cs_grid::a7), TOTUPLE(tr_grid::a1, tr_grid::a2, tr_grid::a3, tr_grid::a4, tr_grid::a5, tr_grid::a6, tr_grid::a7, tr_grid::a8, tr_grid::a9, tr_grid::a10)) as attributes; 
+
+		cs_tr2 = group cs_tr by (year, doy, gts);
+		cs_tr3 = foreach cs_tr2 { 
+			elms = order cs_tr by distance ASC;
+			top = limit elms 1;
+			generate FLATTEN(group), flatten(top); 
+		};
+				HadoopVersion   PigVersion      UserId  StartedAt       FinishedAt      Features
+				2.0.0-cdh4.1.2  0.10.0-cdh4.1.2 kdoan1  2013-09-24 13:39:29     2013-09-24 14:03:40     HASH_JOIN,GROUP_BY
+
+				Success!
+
+				Job Stats (time in seconds):
+				JobId   Maps    Reduces MaxMapTime      MinMapTIme      AvgMapTime      MaxReduceTime   MinReduceTime   AvgReduceTime   Alias   Feature Outputs
+				job_201309051335_0001   3       7       1231    662     996     178     132     164     cs_grid,cs_tr,tr_grid   HASH_JOIN
+				job_201309051335_0002   1       1       5       5       5       6       6       6       cs_tr2,cs_tr3   GROUP_BY        hdfs://test-nn-ib:8020/user/kdoan1/cloudsat_trmm_grid_xyz.gz,
+
+				Input(s):
+				Successfully read 185894800 records from: "hdfs://test-nn-ib:8020/user/kdoan1/cloudsat_grid_xyz.gz"
+				Successfully read 52387749 records from: "hdfs://test-nn-ib:8020/user/kdoan1/trmm_grid_xyz.gz"
+
+				Output(s):
+				Successfully stored 32817 records (1183082 bytes) in: "hdfs://test-nn-ib:8020/user/kdoan1/cloudsat_trmm_grid_xyz.gz"
+
+				Counters:
+				Total records written : 32817
+				Total bytes written : 1183082
+				Spillable Memory Manager spill count : 0
+				Total bags proactively spilled: 0
+				Total records proactively spilled: 0
+
+				Job DAG:
+				job_201309051335_0001   ->      job_201309051335_0002,
+				job_201309051335_0002
+				2013-09-24 14:03:41,011 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MapReduceLauncher - Success!
+				
+				
+				
+				
+				
+Test on 02/26/2014
+
+Scidb
+	2007
+		real    2m31.596s
+		user    0m0.010s
+		sys     0m0.005s
+	2007 - 2008
+		real    5m3.032s
+		user    0m0.011s
+		sys     0m0.006s
+	2007 - 2010
+		real    7m22.161s
+		user    0m0.007s
+		sys     0m0.007s
+		
+		

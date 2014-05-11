@@ -1,0 +1,10 @@
+finding intersections, assuming dimensions are (year, doy, x, y, z, t)
+    1. Grid data points, using x, y, z and t, so that each data point is assigned to 1 bucket, for both trajectories
+            dimensions become (year, doy, gx, gy, gz, gt, t), (x, y, z) become attributes.
+    2. Perform a cross join based on (year, doy, gx, gy, gz, gt)
+    3. For each of the group based on the above join keys, find the pair of closest points.
+        -> this is the set of intersections of interest.
+        
+scidb (supposed the arrays are a, b), data already gridded (skip step 1)
+    cross_join(a, b, a.year, b.year, a.doy, b.doy, a.gx, b.gx, a.gy, b.gy, a.gz, b.gz, a.gt, b.gt);
+    then find the pair of data points that is closest, group by gt.
